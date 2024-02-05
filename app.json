@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "texto-app",
-    "slug": "texto-app",
+    "name": "Texto",
+    "slug": "Texto",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icons/icon.png",
@@ -22,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/icons/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.shreyas29.Texto"
     },
     "web": {
       "bundler": "metro",
@@ -35,6 +36,20 @@
     "experiments": {
       "typedRoutes": true,
       "tsconfigPaths": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "51d13283-be2a-4a37-ad91-2366457e42fa"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/51d13283-be2a-4a37-ad91-2366457e42fa"
     }
   }
 }
