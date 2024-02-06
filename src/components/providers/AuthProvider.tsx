@@ -1,9 +1,7 @@
-import { View, Text } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
-import { User, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
 import { auth, db } from '@/src/lib/firebase';
+import { User, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { getDownloadURL, getStorage, ref, uploadBytes, uploadString } from 'firebase/storage';
+import React, { useContext, useEffect, useState } from 'react';
 
 interface Props {
     children: React.ReactNode

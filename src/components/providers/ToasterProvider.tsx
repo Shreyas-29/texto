@@ -1,5 +1,5 @@
 import { Colors } from '@/src/constants';
-import { ToastProvider } from 'react-native-toast-notifications'
+import { ToastProvider } from 'react-native-toast-notifications';
 
 const ToasterProvider = ({ children }: { children: React.ReactNode }) => {
     return (

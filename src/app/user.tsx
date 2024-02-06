@@ -1,17 +1,17 @@
-import { View, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
-import React, { useState } from 'react'
-import { useAuth } from '../components'
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Colors, Fonts, Sizes, settings } from '../constants';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import { useToast } from 'react-native-toast-notifications';
-import AwesomeAlert from 'react-native-awesome-alerts';
-import { StatusBar } from 'expo-status-bar';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { auth, storage } from '../lib/firebase';
 import * as ImagePicker from 'expo-image-picker';
+import { useRouter } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { updateProfile } from 'firebase/auth';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import React, { useState } from 'react';
+import { ActivityIndicator, Image, Text, TouchableOpacity, View } from 'react-native';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useToast } from 'react-native-toast-notifications';
+import { useAuth } from '../components';
+import { Colors, Fonts, Sizes, settings } from '../constants';
+import { auth, storage } from '../lib/firebase';
 
 const User = () => {
 
@@ -109,7 +109,7 @@ const User = () => {
                                 {isUploading ? (
                                     <ActivityIndicator size="small" color={Colors.darkgray4} />
                                 ) : (
-                                    <Image source={{ uri: user?.photoURL! }} style={{ width: 50, height: 50, borderRadius: 50 }} />
+                                    <Image source={{ uri: photoUrl || user?.photoURL! }} style={{ width: 50, height: 50, borderRadius: 50 }} />
                                 )}
                             </TouchableOpacity>
                             <View style={{ alignItems: 'flex-start', marginLeft: Sizes.padding2 }}>

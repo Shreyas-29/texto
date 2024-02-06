@@ -1,12 +1,12 @@
-import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { User } from 'firebase/auth'
 import { Colors, Fonts, Sizes } from '@/src/constants';
 import { auth, db } from '@/src/lib/firebase';
+import { useRoute } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
+import { User } from 'firebase/auth';
+import { doc, getDoc, onSnapshot, setDoc } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Image, Text, TouchableOpacity, View } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
-import { collection, doc, getDoc, onSnapshot, setDoc } from 'firebase/firestore';
-import { useFocusEffect, useRoute } from '@react-navigation/native';
-import { useSegments, useRouter } from 'expo-router';
 
 interface Props {
     user: User | null;
@@ -27,9 +27,6 @@ const Item = ({ user }: Friend) => {
     const router = useRouter();
 
     const pathname = useRoute().name;
-
-    // console.log('ids:', currentUser?.uid, user?.id);
-    // const [isRequestAccepted, setIsRequestAccepted] = useState<boolean>(false);
 
     const [requestSent, setRequestSent] = useState<boolean>(false);
     const [friendRequestStatus, setFriendRequestStatus] = useState<"pending" | "accepted" | "rejected" | "">("");
@@ -131,28 +128,6 @@ const Item = ({ user }: Friend) => {
         }
     };
 
-    // const fetchFriendRequestStatus = async () => {
-    //     try {
-    //         const userId = currentUser?.uid;
-    //         const friendId = user?.id;
-
-    //         if (userId) {
-    //             const requestDoc = await getDoc(doc(db, 'friendRequests', `${userId}_${friendId}`));
-
-    //             console.log('doc: ', requestDoc.exists());
-
-    //             if (requestDoc.exists()) {
-    //                 const { status } = requestDoc.data();
-    //                 setFriendRequestStatus(status);
-    //             } else {
-    //                 setFriendRequestStatus('');
-    //             }
-    //         }
-    //     } catch (error) {
-    //         console.error('Error fetching friend request status:', error);
-    //     }
-    // };
-
     const fetchRequest = async () => {
         try {
             const userId = currentUser?.uid;
@@ -178,40 +153,11 @@ const Item = ({ user }: Friend) => {
         }
     };
 
-    // console.log('friendRequestStatus:', friendRequestStatus);
-
-    // useEffect(() => {
-    //     const fetchFriendRequestStatus = async () => {
-    //         try {
-    //             const userId = currentUser?.uid;
-    //             const friendId = user?.id;
-
-    //             if (userId) {
-    //                 const requestDoc = await getDoc(doc(db, 'friendRequests', `${userId}_${friendId}`));
-
-    //                 // console.log('doc: ', requestDoc.data());
-    //                 if (requestDoc.exists()) {
-    //                     const { status } = requestDoc.data();
-    //                     // console.log('status:', status);
-    //                     setFriendRequestStatus(status);
-    //                 } else {
-    //                     setFriendRequestStatus('');
-    //                 }
-    //             }
-    //         } catch (error) {
-    //             console.error('Error fetching friend request status:', error);
-    //         }
-    //     };
-
-    //     fetchFriendRequestStatus();
-    // }, [currentUser?.uid, user?.id, requestSent]);
-
     useEffect(() => {
         const unsubscribePromise = fetchRequest();
 
         // Cleanup function to unsubscribe when the component unmounts
         return () => {
-            // unsubscribe && unsubscribe();
             unsubscribePromise.then(unsubscribe => {
                 unsubscribe && unsubscribe();
             });
@@ -232,7 +178,7 @@ const Item = ({ user }: Friend) => {
                         {user?.displayName}
                     </Text>
                     <Text style={{ fontSize: Fonts.sm, fontFamily: 'Regular', color: Colors.gray }}>
-                        {user?.email}
+                        {user?.email?.slice(0, 18) + '...'}
                     </Text>
                 </View>
             </View>
@@ -240,7 +186,6 @@ const Item = ({ user }: Friend) => {
                 <TouchableOpacity
                     style={{
                         borderRadius: 6,
-                        // backgroundColor: requestSent ? Colors.teal : Colors.lightGray3,
                         backgroundColor: friendRequestStatus === 'pending' ? Colors.lightBlue : friendRequestStatus === 'accepted' ? Colors.primary : friendRequestStatus === 'rejected' ? Colors.lightGray4 : Colors.lightGray4,
                         width: 90, height: 32, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'
                     }}
@@ -254,7 +199,6 @@ const Item = ({ user }: Friend) => {
                             fontSize: Fonts.xs, fontFamily: 'Medium',
                             color: friendRequestStatus === 'pending' ? Colors.primary4 : friendRequestStatus === 'accepted' ? Colors.white : friendRequestStatus === 'rejected' ? Colors.gray2 : Colors.gray2
                         }}>
-                            {/* {requestSent ? 'Pending' : 'Add Friend'} */}
                             {friendRequestStatus === 'pending' ? 'Pending' : friendRequestStatus === 'accepted' ? 'Message' : friendRequestStatus === 'rejected' ? 'Add Friend' : 'Add Friend'}
                         </Text>
                     )}
@@ -263,5 +207,5 @@ const Item = ({ user }: Friend) => {
         </View>
     )
 }
-// 12345
+
 export default Item

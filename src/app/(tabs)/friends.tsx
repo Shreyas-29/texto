@@ -1,10 +1,10 @@
-import { View, Text, FlatList, TouchableOpacity, RefreshControl, Image } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { auth, db } from '@/src/lib/firebase'
-import { useToast } from 'react-native-toast-notifications';
-import { collection, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { Colors, Fonts, Sizes } from '@/src/constants';
+import { auth, db } from '@/src/lib/firebase';
 import { Ionicons } from '@expo/vector-icons';
+import { collection, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Image, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
+import { useToast } from 'react-native-toast-notifications';
 import { ScrollView } from 'react-native-virtualized-view';
 
 interface Request {
@@ -25,51 +25,15 @@ const Friends = () => {
     const [friendRequests, setFriendRequests] = useState<Request[]>([]);
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
-    // useEffect(() => {
-    //     const fetchFriendRequests = async () => {
-    //         try {
-    //             const userId = currentUser?.uid;
-
-    //             console.log('userId', userId)
-
-    //             if (userId) {
-    //                 const friendRequestsCollection = collection(db, 'friendRequests');
-    //                 const friendRequestsQuery = query(friendRequestsCollection, where('recipientId', '==', userId));
-
-    //                 console.log('friendRequestsQuery', friendRequestsQuery)
-
-    //                 const friendRequestsSnapshot = await getDocs(friendRequestsQuery);
-
-    //                 console.log('friendRequestsSnapshot', friendRequestsSnapshot)
-
-    //                 const requestsData = friendRequestsSnapshot.docs.map(doc => ({
-    //                     id: doc.id,
-    //                     ...doc.data(),
-    //                 }));
-
-    //                 console.log('requestsData', requestsData)
-
-    //                 setFriendRequests(requestsData);
-    //             }
-    //         } catch (error) {
-    //             console.error('Error fetching friend requests:', error);
-    //         }
-    //     };
-
-    //     fetchFriendRequests();
-    // }, []);
-
     const handleAcceptRequest = async (friendRequest: Request) => {
         try {
-            // Update the status in Firestore
             const requestDocRef = doc(db, 'friendRequests', friendRequest.id);
             await updateDoc(requestDocRef, { status: 'accepted' });
 
-            // Update the local state to reflect the accepted status
             const updatedFriendRequests = friendRequests.filter((request) =>
                 request.id === friendRequest.id ? { ...request, status: 'accepted' } : request
             );
-            // console.log('updatedFriendRequests', updatedFriendRequests, 'friendRequests', friendRequests);
+
             setFriendRequests(updatedFriendRequests);
             toast.show(`You are now friends with ${friendRequest.requesterName}`);
         } catch (error) {
@@ -85,7 +49,7 @@ const Friends = () => {
             toast.show(`You declined ${friendRequest.requesterName}'s friend request`);
 
             const updatedFriendRequests = friendRequests.filter((request) => request.id !== friendRequest.id);
-            // console.log('updatedFriendRequests', updatedFriendRequests, 'friendRequests', friendRequests);
+
             setFriendRequests(updatedFriendRequests);
         } catch (error) {
             console.error('Error declining friend request:', error);
@@ -117,67 +81,6 @@ const Friends = () => {
         )
     };
 
-    // const fetchFriendRequests = async () => {
-    //     setIsRefreshing(true);
-    //     try {
-    //         const userId = currentUser?.uid;
-
-    //         if (userId) {
-    //             // Get all friend requests where the current user is the recipient
-    //             const friendRequestsCollection = collection(db, 'friendRequests');
-    //             const friendRequestsQuery = query(friendRequestsCollection, where('recipientId', '==', userId));
-    //             const friendRequestsSnapshot = await getDocs(friendRequestsQuery);
-
-    //             // const requestsDataPromises = friendRequestsSnapshot.docs.map(async (document) => {
-    //             //     const requestData = document.data();
-    //             //     const requesterId = requestData.requesterId;
-
-    //             //     // Fetch additional user data for each friend request
-    //             //     const userDoc = await getDoc(doc(db, 'users', requesterId));
-    //             //     const userData = userDoc.data();
-
-    //             //     // Combine friend request data with user data
-    //             //     return {
-    //             //         id: document.id,
-    //             //         ...requestData,
-    //             //         requesterName: userData?.displayName,
-    //             //         requesterEmail: userData?.email,
-    //             //     };
-    //             // });
-    //             const requestsDataPromises = friendRequestsSnapshot.docs.map(async (document) => {
-    //                 const requestData = document.data();
-    //                 const requesterId = requestData.requesterId;
-
-    //                 // Fetch additional user data for each friend request
-    //                 const userDoc = await getDoc(doc(db, 'users', requesterId));
-    //                 const userData = userDoc.data();
-
-    //                 // Combine friend request data with user data
-    //                 return {
-    //                     id: document.id,
-    //                     recipientId: requestData.recipientId,
-    //                     requesterId: requestData.requesterId,
-    //                     requesterName: userData?.displayName,
-    //                     requesterEmail: userData?.email,
-    //                     status: requestData?.status,
-    //                 };
-    //             });
-
-
-    //             const requestsData = await Promise.all(requestsDataPromises);
-    //             setFriendRequests(requestsData);
-    //         }
-    //     } catch (error) {
-    //         console.error('Error fetching friend requests:', error);
-    //     } finally {
-    //         setIsRefreshing(false);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     fetchFriendRequests();
-    // }, []);
-
     const fetchFriendRequests = async () => {
         setIsRefreshing(true);
         try {
@@ -192,19 +95,13 @@ const Friends = () => {
                 );
                 const friendRequestsSnapshot = await getDocs(friendRequestsQuery);
 
-                // console.log('friendRequestsSnapshot', friendRequestsSnapshot);
-
                 const requestsDataPromises = friendRequestsSnapshot.docs.map(async (document) => {
                     const requestData = document.data();
                     const requesterId = requestData.requesterId;
 
-                    // console.log('requestData', requestData);
-
                     // Fetch additional user data for each friend request
                     const userDoc = await getDoc(doc(db, 'users', requesterId));
                     const userData = userDoc.data();
-
-                    // console.log('userData', userData);
 
                     // Combine friend request data with user data
                     return {
@@ -236,7 +133,6 @@ const Friends = () => {
     return (
         <ScrollView
             style={{ flex: 1, backgroundColor: Colors.white }}
-            // contentContainerStyle={{ flex: 1 }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             refreshControl={

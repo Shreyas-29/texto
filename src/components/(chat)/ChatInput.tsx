@@ -1,11 +1,9 @@
-import { View, Text, TextInput, TouchableOpacity, Image, Animated, LayoutAnimation, UIManager, ActivityIndicator } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
 import { Colors, Fonts, Sizes } from '@/src/constants';
-import ImagePicker from 'expo-image-picker';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { auth, storage } from '@/src/lib/firebase';
-import { useToast } from 'react-native-toast-notifications';
+import { auth } from '@/src/lib/firebase';
 import { Ionicons } from '@expo/vector-icons';
+import React, { useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Animated, Image, LayoutAnimation, TextInput, TouchableOpacity, UIManager, View } from 'react-native';
+import { useToast } from 'react-native-toast-notifications';
 
 interface Props {
     value: string;

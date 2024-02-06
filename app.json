@@ -2,7 +2,7 @@
   "expo": {
     "name": "Texto",
     "slug": "Texto",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./src/assets/icons/icon.png",
     "scheme": "myapp",

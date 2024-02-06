@@ -1,36 +1,22 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createStackNavigator } from '@react-navigation/stack';
 import { useFonts } from 'expo-font';
+import { useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Welcome from '.';
 import { AuthProvider, Header, ToasterProvider, useAuth } from '../components';
 import { Colors } from '../constants';
 import AuthLayout from './(auth)/_layout';
 import TabLayout from './(tabs)/_layout';
-import Welcome from '.';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import User from './user';
-import { Slot, useRouter } from 'expo-router';
 import Chat from './chat';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ImagePreview from './image';
+import Profile from './profile';
+import User from './user';
 
 const Stack = createNativeStackNavigator();
-// const a = createStackNavigator
 
 export default function RootLayout() {
-    // useEffect(() => {
-    // const getUser = async () => {
-    //     const token = await AsyncStorage.getItem('@texto_token');
-    //     if (token) {
-    //         setUser(true);
-    //     } else {
-    //         setUser(false);
-    //     }
-    // };
-    // getUser(); if (typeof isAuthenticated === 'undefined') return;
-
-    // }, []);
 
     const [loaded, error] = useFonts({
         'Light': require('@/src/assets/fonts/DMSans-Light.ttf'),
@@ -55,16 +41,6 @@ export default function RootLayout() {
     if (!loaded) {
         return null;
     }
-
-    // if (!isUser) {
-    //     return (
-    //         <AuthProvider>
-    //             <ToasterProvider>
-    //                 <RootLayoutNavAuth />
-    //             </ToasterProvider>
-    //         </AuthProvider>
-    //     );
-    // }
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
@@ -92,13 +68,7 @@ function RootLayoutNav() {
     }, [isAuthenticated]);
 
     return (
-        <Stack.Navigator
-            initialRouteName='(tabs)'
-            screenOptions={{
-                // animation: 'slide_from_right',
-                animationTypeForReplace: 'pop',
-            }}
-        >
+        <Stack.Navigator initialRouteName='(tabs)'>
             <Stack.Screen
                 name='index'
                 component={Welcome}
@@ -152,6 +122,16 @@ function RootLayoutNav() {
                 }}
             />
             <Stack.Screen
+                name='profile'
+                component={Profile}
+                options={{
+                    statusBarColor: Colors.white,
+                    statusBarStyle: 'dark',
+                    headerShown: false,
+                    presentation: 'modal',
+                }}
+            />
+            <Stack.Screen
                 name='(auth)'
                 component={AuthLayout}
                 options={{
@@ -163,49 +143,4 @@ function RootLayoutNav() {
         </Stack.Navigator>
     );
 
-    // return (
-    //     <Slot />
-    // );
 };
-
-// function RootLayoutNavAuth() {
-//     return (
-//         <Stack.Navigator
-//             initialRouteName='index'
-//             screenOptions={{
-//                 animation: 'slide_from_right',
-//             }}
-//         >
-//             <Stack.Screen
-//                 name='index'
-//                 component={Welcome}
-//                 options={{
-//                     statusBarColor: Colors.white,
-//                     statusBarStyle: 'dark',
-//                     headerShown: false,
-//                 }}
-//             />
-//             <Stack.Screen
-//                 name='(auth)'
-//                 component={AuthLayout}
-//                 options={{
-//                     statusBarColor: Colors.white,
-//                     statusBarStyle: 'dark',
-//                     headerShown: false,
-//                 }}
-//             />
-//             <Stack.Screen
-//                 name='(tabs)'
-//                 component={TabLayout}
-//                 options={{
-//                     statusBarColor: Colors.white,
-//                     statusBarStyle: 'dark',
-//                     header: () => (
-//                         <Header />
-//                     ),
-//                     headerTitle: '',
-//                 }}
-//             />
-//         </Stack.Navigator>
-//     );
-// };

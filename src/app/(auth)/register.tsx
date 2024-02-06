@@ -1,17 +1,14 @@
-import { View, Text, KeyboardAvoidingView, Platform, TextInput, Dimensions, TouchableOpacity, ActivityIndicator, Image } from 'react-native'
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { Colors, Fonts, Sizes } from '@/src/constants';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth, db, storage } from '@/src/lib/firebase';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useToast } from 'react-native-toast-notifications';
-import { useRouter } from 'expo-router';
-import { collection, doc, setDoc } from 'firebase/firestore';
-import { getDownloadURL, getStorage, ref, uploadBytes, uploadString } from 'firebase/storage';
-import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '@/src/components';
-
+import { Colors, Fonts, Sizes } from '@/src/constants';
+import { auth, storage } from '@/src/lib/firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { getDownloadURL, getStorage, ref, uploadBytes, uploadString } from 'firebase/storage';
+import React, { useState } from 'react';
+import { ActivityIndicator, Dimensions, Image, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useToast } from 'react-native-toast-notifications';
 
 const Register = ({ navigation }: any) => {
 

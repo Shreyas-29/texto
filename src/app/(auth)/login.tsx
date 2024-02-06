@@ -1,13 +1,12 @@
-import { View, Text, KeyboardAvoidingView, Platform, TextInput, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { useAuth } from '@/src/components';
 import { Colors, Fonts, Sizes } from '@/src/constants';
-import { getIdToken, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/src/lib/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getIdToken, signInWithEmailAndPassword } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useToast } from 'react-native-toast-notifications';
-import { useRouter } from 'expo-router';
-import { useAuth } from '@/src/components';
 
 const Login = ({ navigation }: any) => {
 

@@ -10,15 +10,22 @@ import { collection, getFirestore } from 'firebase/firestore';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { getStorage } from "firebase/storage";
 
+const apiKey = process.env.EXPO_PUBLIC_FIREBASE_API_KEY;
+const authDomain = process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN;
+const databaseURL = process.env.EXPO_PUBLIC_FIREBASE_DATABASE_URL;
+const projectId = process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID;
+const storageBucket = process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET;
+const messagingSenderId = process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID;
+const appId = process.env.EXPO_PUBLIC_FIREBASE_APP_ID;
+
 const firebaseConfig = {
-    apiKey: "AIzaSyDlEJhurMXkW6320hDrc2WF5912SRkYTno",
-    authDomain: "mediafire-b67df.firebaseapp.com",
-    databaseURL: "https://mediafire-b67df-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "mediafire-b67df",
-    storageBucket: "mediafire-b67df.appspot.com",
-    messagingSenderId: "711783895952",
-    appId: "1:711783895952:web:0708763a767871324f1915",
-    measurementId: "G-8HEQW76DX5"
+    apiKey: apiKey,
+    authDomain: authDomain,
+    databaseURL: databaseURL,
+    projectId: projectId,
+    storageBucket: storageBucket,
+    messagingSenderId: messagingSenderId,
+    appId: appId
 };
 
 // Initialize Firebase

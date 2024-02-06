@@ -1,10 +1,9 @@
-import { View, Text, TouchableOpacity, Animated } from 'react-native'
-import React from 'react'
-import { Colors, Sizes } from '@/src/constants'
-import { useRouter } from 'expo-router';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { Colors, Sizes } from '@/src/constants';
 import { auth } from '@/src/lib/firebase';
 import { Message } from '@/src/types/message';
+import { Feather, Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { Animated, TouchableOpacity, View } from 'react-native';
 
 interface Props {
     friendId: string;
@@ -14,8 +13,6 @@ interface Props {
 }
 
 const ChatMenu = ({ friendId, selectedMessage, setShowMenu, handleDeleteMessage }: Props) => {
-
-    const router = useRouter();
 
     const currentUser = auth.currentUser;
 
@@ -36,7 +33,7 @@ const ChatMenu = ({ friendId, selectedMessage, setShowMenu, handleDeleteMessage 
                             <Feather name='trash' size={20} color={Colors.darkgray} />
                         </TouchableOpacity>
                     )}
-                    <TouchableOpacity style={{ backgroundColor: Colors.lightGray6, width: 40, height: 40, borderRadius: Sizes.margin, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} onPress={() => setShowMenu(false)}>
+                    <TouchableOpacity style={{ backgroundColor: Colors.lightGray6, width: 40, height: 40, borderRadius: Sizes.margin, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                         <Ionicons name='ellipsis-vertical' size={20} color={Colors.darkgray} />
                     </TouchableOpacity>
                 </View>

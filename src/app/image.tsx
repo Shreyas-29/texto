@@ -1,15 +1,15 @@
-import { View, Text, Image, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native'
-import React, { useState } from 'react'
-import { useGlobalSearchParams, useLocalSearchParams, useRouter } from 'expo-router'
-import { useRoute } from '@react-navigation/native';
-import { Colors, Sizes } from '../constants';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
-import * as MediaLibrary from 'expo-media-library';
-import * as Sharing from 'expo-sharing';
-import * as FileSystem from 'expo-file-system';
-import { useToast } from 'react-native-toast-notifications';
 import { Feather, Ionicons } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+import { useRouter } from 'expo-router';
+import * as Sharing from 'expo-sharing';
+import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
+import { ActivityIndicator, Dimensions, Image, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useToast } from 'react-native-toast-notifications';
+import { Colors, Sizes } from '../constants';
 
 const ImagePreview = () => {
 

@@ -1,11 +1,10 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
-import { Colors } from '../constants'
 import { Ionicons } from '@expo/vector-icons'
-import { useAuth } from './providers/AuthProvider'
 import { useNavigation } from 'expo-router'
+import React from 'react'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-// import { useNavigation } from '@react-navigation/native'
+import { Colors } from '../constants'
+import { useAuth } from './providers/AuthProvider'
 
 const Header = () => {
 

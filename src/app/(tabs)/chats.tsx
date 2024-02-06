@@ -1,16 +1,13 @@
-import { View, Text, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
-import React, { cloneElement, useEffect, useState } from 'react'
-import { User } from 'firebase/auth';
-import { collection, doc, getDoc, getDocs, limit, onSnapshot, or, orderBy, query, where } from 'firebase/firestore';
-import { auth, db } from '@/src/lib/firebase';
-import { usePathname, useRouter } from 'expo-router';
 import { Colors, Fonts, Sizes } from '@/src/constants';
-import { useFocusEffect, useRoute } from '@react-navigation/native';
+import { auth, db } from '@/src/lib/firebase';
 import useLatestMessageStore from '@/src/lib/latestMessage';
+import { useRouter } from 'expo-router';
+import { User } from 'firebase/auth';
+import { collection, doc, getDoc, getDocs, limit, orderBy, query, where } from 'firebase/firestore';
 import moment from 'moment';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-virtualized-view';
-
 
 const Chats = () => {
 
@@ -18,97 +15,10 @@ const Chats = () => {
 
     const router = useRouter();
 
-    const pathname = useRoute().name;
+    const { latestMessages } = useLatestMessageStore();
 
-    console.log('pathname', pathname);
-
-    const { latestMessages, setLatestMessage } = useLatestMessageStore();
-
-    const [friends, setFriends] = useState<User[] | null>([]);
     const [users, setUsers] = useState<User[] | null>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
-    const getUsers = async () => {
-        setIsLoading(true);
-
-        try {
-            const currentUserId = currentUser?.uid;
-
-            const q = query(collection(db, 'users'));
-            // const q = query(collection(db, 'chats', `${currentUserId}_${currentUserId}`, 'messages'));
-
-            const usersSnapshot = await getDocs(q);
-
-            const allUsers = usersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-
-            const otherUsers = allUsers.filter((user) => user?.id !== currentUserId);
-
-            setFriends(otherUsers as any);
-        } catch (error) {
-            console.log('Could not get users: ', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const getFriends2 = async () => {
-        setIsLoading(true);
-
-        try {
-            const currentUserId = currentUser?.uid;
-
-            // Query friendRequests where either requesterId or recipientId matches currentUserId and status is 'accepted'
-            const friendRequestsCollection = collection(db, 'friendRequests');
-            const friendRequestsQuery = query(
-                friendRequestsCollection,
-                where('status', '==', 'accepted'),
-                where(
-                    'requesterId',
-                    '==',
-                    currentUserId
-                ),
-                // where(
-                //     'recipientId',
-                //     '==',
-                //     currentUserId
-                // ),
-            );
-
-            const friendRequestsSnapshot = await getDocs(friendRequestsQuery);
-
-            // Extract user IDs from friend requests
-            const usersArray = friendRequestsSnapshot.docs.map((doc) => {
-                const friendRequestData = doc.data();
-                return friendRequestData.requesterId === currentUserId
-                    ? friendRequestData.recipientId
-                    : friendRequestData.requesterId;
-            });
-
-            // console.log('usersArray', usersArray);
-
-            // Remove duplicates and the current user's ID
-            const uniqueUsersArray = [...new Set(usersArray)].filter(
-                (userId) => userId !== currentUserId
-            );
-            // console.log('uniqueUsersArray', uniqueUsersArray);
-
-            // Fetch additional user details based on user IDs
-            const usersDetailsPromises = uniqueUsersArray.map(async (userId) => {
-                const userDoc = await getDoc(doc(db, 'users', userId));
-                return { id: userId, ...userDoc.data() };
-            });
-
-            const usersDetails = await Promise.all(usersDetailsPromises);
-
-            // Now you have the array of users who are friends with the current user
-            // console.log('Friends:', usersDetails);
-            setUsers(usersDetails as any);
-        } catch (error) {
-            console.log('Could not get users: ', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     const getFriends = async () => {
         setIsLoading(true);
@@ -187,28 +97,6 @@ const Chats = () => {
         }
     };
 
-    const getLatestMessages2 = async (currentUserId: string, usersDetails: any) => {
-        try {
-            setIsLoading(true);
-
-            // Fetch the latest message for each friend
-            const usersWithMessages = await Promise.all(
-                usersDetails.map(async (friend: User) => {
-                    // @ts-ignore
-                    const latestMessage = await getLatestMessage(currentUserId, friend.uid ?? friend?.id);
-                    return { ...friend, latestMessage };
-                })
-            );
-
-            // Update the state with users and their latest messages
-            setUsers(usersWithMessages);
-        } catch (error) {
-            console.error('Error fetching latest messages:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     const getLatestMessages = async (currentUserId: string, usersDetails: any) => {
         try {
             setIsLoading(true);
@@ -264,9 +152,8 @@ const Chats = () => {
 
 
     const renderItem = ({ item }: any) => {
-        // console.log('item', item);
         const friendId = item?.userId ?? item?.uid;
-        // console.log('latestMessages[friendId]', latestMessages);
+
         const { content, timestamp } = latestMessages[friendId] || { content: '', timestamp: new Date() };
 
         return (
@@ -300,7 +187,7 @@ const Chats = () => {
     useEffect(() => {
         getFriends();
         getLatestMessages(currentUser?.uid!, users!);
-    }, []);
+    }, [currentUser?.uid]);
 
 
     return (

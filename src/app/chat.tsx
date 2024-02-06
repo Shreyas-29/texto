@@ -1,24 +1,21 @@
-import { View, Text, FlatList, Alert, Keyboard, TextInput, ViewProps, LayoutAnimation, UIManager, Easing, ActivityIndicator } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import { router, useLocalSearchParams } from 'expo-router';
-import { User } from 'firebase/auth';
-import { Timestamp, addDoc, collection, deleteDoc, doc, getDoc, onSnapshot, orderBy, query } from 'firebase/firestore';
-import { auth, db, storage } from '../lib/firebase';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Colors, Fonts, Sizes } from '../constants';
-import { ChatHeader, ChatInput, ChatMenu, Message } from '../components';
-import { Message as MessageProps } from '../types/message';
-import { GestureEvent, State } from 'react-native-gesture-handler';
-import { v4 as uuidv4 } from 'uuid';
-import useLatestMessageStore from '../lib/latestMessage';
-import moment from 'moment';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
-import { useToast } from 'react-native-toast-notifications';
+import { useLocalSearchParams } from 'expo-router';
+import { User } from 'firebase/auth';
+import { addDoc, collection, deleteDoc, doc, getDoc, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import moment from 'moment';
+import React, { useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, FlatList, Keyboard, Text, TextInput, View } from 'react-native';
+import { GestureEvent, State } from 'react-native-gesture-handler';
 import 'react-native-get-random-values';
-
-// Enable LayoutAnimation
-// UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useToast } from 'react-native-toast-notifications';
+import { v4 as uuidv4 } from 'uuid';
+import { ChatHeader, ChatInput, ChatMenu, Message } from '../components';
+import { Colors, Fonts, Sizes } from '../constants';
+import { auth, db, storage } from '../lib/firebase';
+import useLatestMessageStore from '../lib/latestMessage';
+import { Message as MessageProps } from '../types/message';
 
 const Chat = () => {
 
@@ -193,7 +190,7 @@ const Chat = () => {
             setSelectedMessage(message);
             setTimeout(() => {
                 setShowMenu(true);
-            }, 1000);
+            }, 2000);
         }
     };
 
@@ -201,33 +198,6 @@ const Chat = () => {
         // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setShowMenu((prev) => !prev);
     };
-
-    // const renderItem = ({ item, index }: { item: MessageProps, index: number }) => {
-
-    //     const prevMessageTimestamp = index > 0 ? messages[index - 1].timestamp : undefined; // Track previous message's timestamp
-
-    //     const formattedTimestamp = moment(item.timestamp.seconds * 1000).format('h:mm a');
-
-    //     const shouldShowSeparator = shouldShowDateSeparator(item, prevMessageTimestamp as any);
-
-    //     return (
-    //         <>
-    //             {shouldShowSeparator && (
-    //                 <View style={{ marginBottom: Sizes.padding4 }}>
-    //                     <Text style={{ fontSize: Fonts.sm, fontFamily: 'Regular', color: Colors.gray }}>
-    //                         {formattedTimestamp}
-    //                     </Text>
-    //                 </View>
-    //             )}
-    //             <Message
-    //                 message={item}
-    //                 isCurrentUser={item.senderId === currentUser?.uid}
-    //                 onLongPress={handleLongPress}
-    //                 setShowMenu={handleToggleMenu}
-    //             />
-    //         </>
-    //     );
-    // };
 
     const renderItem = ({ item, index }: { item: MessageProps, index: number }) => {
         const prevMessageTimestamp = index > 0 ? messages[index - 1].timestamp : undefined;
@@ -256,7 +226,6 @@ const Chat = () => {
         );
     };
 
-
     useEffect(() => {
         const fetchFriendDetails = async () => {
             try {
@@ -276,40 +245,6 @@ const Chat = () => {
 
         fetchFriendDetails();
     }, []);
-
-    // useEffect(() => {
-    //     // Set up a listener to get real-time updates on new messages
-    //     const q = query(collection(db, 'chats', `chatRoomId/messages`), orderBy('timestamp'));
-    //     const unsubscribe = onSnapshot(q, (snapshot) => {
-    //         const newMessages = snapshot.docs.map((doc) => doc.data());
-    //         // console.log('newMessages', newMessages);
-    //         setMessages(newMessages as any);
-    //     });
-
-    //     // Clean up the listener when the component unmounts
-    //     return () => unsubscribe();
-    // }, [currentUser?.uid, friendId]);
-    let i;
-
-    // useEffect(() => {
-    //     const currentUserId = currentUser?.uid;
-    //     const newChatRoomId = [currentUserId, friendId].sort().join('_');
-    //     setChatRoomId(newChatRoomId);
-
-    //     console.log('newChatRoomId', newChatRoomId);
-
-    //     const messagesRef = collection(db, 'chats', newChatRoomId, 'messages');
-    //     const messagesQuery = query(messagesRef, orderBy('timestamp'));
-
-    //     console.log('messagesQuery', messagesQuery);
-
-    //     const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
-    //         const newMessages = snapshot.docs.map((doc) => doc.data());
-    //         setMessages(newMessages as any);
-    //     });
-
-    //     return () => unsubscribe();
-    // }, [currentUser?.uid, friendId]);
 
     useEffect(() => {
         const fetchChatData = async () => {

@@ -1,10 +1,9 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
 import { Colors, Fonts, Sizes } from '@/src/constants'
 import { Ionicons } from '@expo/vector-icons'
-import { auth } from '@/src/lib/firebase'
 import { useRouter } from 'expo-router'
 import { User } from 'firebase/auth'
+import React from 'react'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 interface Props {
     isLoading: boolean;

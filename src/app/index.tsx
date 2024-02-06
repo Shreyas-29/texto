@@ -19,27 +19,6 @@ const Welcome = ({ navigation }: any) => {
 
     const user = auth.currentUser;
 
-    // @ts-ignore
-    const { user: cuser } = useAuth();
-
-    // useEffect(() => {
-    //     const getUser = async () => {
-
-    //         const token = await auth.currentUser?.getIdToken();
-    //         try {
-    //             if (token && user) {
-    //                 navigation.navigate('(tabs)');
-    //             }
-    //         } catch (error) {
-    //             console.log('Could not get token: ', error);
-    //         }
-    //     };
-
-    //     getUser();
-    // }, []);
-
-    // console.log('user', cuser);
-
     const buttonLabel = (label: string) => {
         return (
             <View style={{ padding: 12 }}>

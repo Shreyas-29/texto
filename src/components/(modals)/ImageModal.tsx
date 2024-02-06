@@ -1,9 +1,9 @@
-import { View, Text, Image, Modal, Pressable, TouchableOpacity, StatusBar } from 'react-native'
-import React from 'react'
 import { Colors, Sizes } from '@/src/constants';
 import { Ionicons } from '@expo/vector-icons';
 import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
+import React from 'react';
+import { Image, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
 
 interface Props {
     imageUrl: string;
@@ -46,9 +46,6 @@ const ImageModal = ({ imageUrl, isOpen, setIsOpen }: Props) => {
         >
             <View style={{ flex: 1, backgroundColor: Colors.transparentBlack2 }}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    {/* <Pressable onPress={() => setIsOpen(false)} style={{ backgroundColor: Colors.transparentBlack1, position: 'absolute', top: Sizes.padding4, right: Sizes.padding4 }} >
-                        <Ionicons name="close" size={20} color="white" style={{ position: 'absolute', top: Sizes.padding5, right: Sizes.padding5 }} />
-                    </Pressable> */}
                     <Pressable onPress={() => setIsOpen((prev) => !prev)} style={{ flex: 1 }} />
                     <View style={{ backgroundColor: 'white', padding: Sizes.padding4, width: '100%', alignItems: 'center', position: 'relative' }}>
                         <Image source={{ uri: imageUrl }} style={{ width: '100%', height: 200, borderRadius: Sizes.small }} />
