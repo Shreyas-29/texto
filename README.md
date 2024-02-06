@@ -58,6 +58,9 @@ Welcome to the future of messaging! This React Native chat app is designed to pr
 
 Experience the innovation firsthand! [Download on Expo](https://expo.dev//accounts/shreyas29/projects/Texto/builds/216d0fba-6bc6-4fa4-93d0-60f19c3a1d53)
 
+## Watch live
+Checkout the [Linkedin Post](https://www.linkedin.com/posts/shreyas-sihasane-441b95238_reactnative-firebasemagic-expoadventures-activity-7160511026134712320-Q7KJ?utm_source=share&utm_medium=member_desktop)
+
 ## Join the Conversation 🤝
 
 Join the conversation on [GitHub](https://github.com/Shreyas-29/texto/) and be a part of the React Native chat app community. Share your thoughts, report issues, and collaborate to shape the future!
