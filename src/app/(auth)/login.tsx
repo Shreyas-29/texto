@@ -72,27 +72,6 @@ const Login = ({ navigation }: any) => {
         }
     };
 
-    useEffect(() => {
-        // get the idtoken from firebase and check if user then redirect to home screen
-        const getUser = async () => {
-            try {
-
-                const token = await getIdToken(auth.currentUser!);
-                console.log('token', token);
-
-                if (token) {
-                    navigation.navigate('(tabs)');
-                } else {
-                    navigation.navigate('(auth)');
-                }
-            } catch (error) {
-                console.log('Redirecting error: ', error);
-            }
-        };
-
-        // getUser();
-    }, []);
-
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.white, padding: Sizes.small, alignItems: 'center', justifyContent: 'center' }}>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'height' : 'padding'}>

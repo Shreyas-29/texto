@@ -122,11 +122,7 @@ const Chat = () => {
 
             // Add the new message to the chat room
             const chatRoomRef = doc(db, 'chats', chatRoomId);
-            // await addDoc(collection(chatRoomRef, 'messages'), {
-            //     content: newMessage,
-            //     senderId: currentUser?.uid,
-            //     timestamp: new Date(),
-            // });
+
             let messageData: { id?: string; senderId?: string; timestamp: Date; content?: string, imageUrl?: string } = {
                 senderId: currentUser?.uid!,
                 timestamp: new Date(),
@@ -141,8 +137,6 @@ const Chat = () => {
             }
 
             messageData.id = uuidv4();
-
-            console.log('messageData', messageData);
 
             await addDoc(collection(chatRoomRef, 'messages'), messageData);
 
@@ -166,9 +160,7 @@ const Chat = () => {
                 return;
             }
 
-            // const messageRef = doc(collection(db, 'chats', chatRoomId, 'messages'), messageId);
             const messageRef = doc(db, 'chats', chatRoomId, 'messages', messageId);
-            // console.log('messageRef', messageRef);
 
             await deleteDoc(messageRef);
 
@@ -195,7 +187,6 @@ const Chat = () => {
     };
 
     const handleToggleMenu = () => {
-        // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setShowMenu((prev) => !prev);
     };
 
@@ -253,19 +244,9 @@ const Chat = () => {
                 const newChatRoomId = [currentUserId, friendId].sort().join('_');
                 setChatRoomId(newChatRoomId);
 
-                // console.log('newChatRoomId', newChatRoomId);
-
                 const messagesRef = collection(db, 'chats', newChatRoomId, 'messages');
                 const messagesQuery = query(messagesRef, orderBy('timestamp'));
 
-                // console.log('messagesQuery', messagesQuery);
-
-                // const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
-                //     const newMessages = snapshot.docs.map((doc) => doc.data());
-                //     console.log('newMessages', newMessages);
-                //     setMessages(newMessages as any);
-                //     setIsLoading(false);
-                // });
                 const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
                     snapshot.docChanges().forEach((change) => {
                         if (change.type === 'added') {
@@ -275,7 +256,6 @@ const Chat = () => {
                         } else if (change.type === 'removed') {
                             // Handle removed messages
                             const message = change.doc.data();
-                            console.log('message.id', message.id, change.doc.id, selectedMessage?.id);
                             setMessages((prevMessages) => prevMessages.filter((message) => {
                                 return message.id !== change.doc.id;
                             }));

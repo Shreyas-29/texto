@@ -42,8 +42,6 @@ const Register = ({ navigation }: any) => {
 
                 const photoURL = await getDownloadURL(profilePhotoRef);
 
-                console.log('photoURL', photoURL);
-
                 updateProfile(credentials.user, { photoURL: photoURL });
 
                 await AsyncStorage.setItem('@texto_token', credentials.user?.refreshToken || '');
@@ -83,7 +81,6 @@ const Register = ({ navigation }: any) => {
         try {
             let response = await register(name, photoUrl, email, password);
 
-            console.log('response', response);
             if (response.success) {
                 toast.show('You are Registered! 🎉');
                 navigation.navigate('(tabs)');

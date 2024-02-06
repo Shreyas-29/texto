@@ -94,8 +94,6 @@ export const AuthProvider = ({ children }: Props) => {
     const logout = async () => {
         try {
             await signOut(auth);
-            // setUser(null);
-            // setIsAuthenticated(false);
 
             return { success: true }
         } catch (error: any) {

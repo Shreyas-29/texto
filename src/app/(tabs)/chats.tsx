@@ -45,13 +45,10 @@ const Chats = () => {
                     : friendRequestData.requesterId;
             });
 
-            // console.log('usersArray', usersArray);
-
             // Remove duplicates and the current user's ID
             const uniqueUsersArray = [...new Set(usersArray)].filter(
                 (userId) => userId !== currentUserId
             );
-            // console.log('uniqueUsersArray', uniqueUsersArray);
 
             // Fetch additional user details based on user IDs
             const usersDetailsPromises = uniqueUsersArray.map(async (userId) => {
@@ -62,7 +59,6 @@ const Chats = () => {
             const usersDetails = await Promise.all(usersDetailsPromises);
 
             // Now you have the array of users who are friends with the current user
-            // console.log('Friends:', usersDetails);
             setUsers(usersDetails as any);
 
             // Fetch the latest messages for each friend
@@ -118,19 +114,14 @@ const Chats = () => {
 
                         const querySnapshot = await getDocs(q);
 
-                        // console.log('querySnapshot', querySnapshot.docs[0]?.data());
                         // Check if there are any documents in the snapshot
                         if (querySnapshot.docs.length > 0) {
                             const latestMessage = querySnapshot.docs[0].data();
 
                             const timestamp = querySnapshot.docs[0]?.data()?.timestamp;
 
-                            // Update Zustand store with latest message
-                            // setLatestMessage(friend?.uid!, latestMessage?.content, timestamp);
-
                             return { ...friend, latestMessage, timestamp };
                         } else {
-                            // No messages found, set latestMessage to an appropriate default value
                             return { ...friend, latestMessage: null };
                         }
 
