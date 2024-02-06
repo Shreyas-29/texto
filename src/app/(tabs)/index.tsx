@@ -41,7 +41,7 @@ const Home = ({ navigation }: any) => {
 
     useEffect(() => {
         getUsers();
-    }, [currentUser]);
+    }, []);
 
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
